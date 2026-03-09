@@ -1,0 +1,52 @@
+
+/* Texto azul visível */
+.sapMText,
+.sapMLabel,
+.sapMTitle,
+.sapMLnk,
+.sapMColumnHeader .sapMText,
+.sapMListTblHeaderCell .sapMText,
+.sapMListTblCell .sapMText,
+.sapUiSelectable,
+.sapMObjLTitle,
+.sapMObjLText,
+.sapMListTbl .sapMText,
+.sapMListTbl .sapMLnk,
+.sapMBtnTransparent .sapMBtnContent,
+.sapMBtnTransparent .sapUiIcon {
+    color: #0539B6 !important;
+}
+
+/* Texto dentro da tabela */
+.sapMListTblRow .sapMText,
+.sapMListTblRow .sapMLnk,
+.sapMListTblCell {
+    color: #0539B6 !important;
+}
+
+/* Search field */
+.sapMSFF .sapMSFI,
+.sapMSFI,
+.sapMInputBaseInner {
+    color: #0539B6 !important;
+}
+
+/* Placeholder do campo de busca */
+.sapMSFI::placeholder,
+.sapMInputBaseInner::placeholder {
+    color: #0539B6 !important;
+    opacity: 0.7;
+}
+
+/* Botões e ações */
+.sapMBtn .sapMBtnContent,
+.sapMBtn .sapUiIcon {
+    color: #0539B6 !important;
+}
+
+/* Botão emphasized continua branco */
+.sapMBtnEmphasized .sapMBtnContent,
+.sapMBtnEmphasized .sapUiIcon,
+.sapMBtnEmphasized .sapMBtnInner {
+    color: #fff !important;
+}

@@ -1,0 +1,32 @@
+{
+    "version": "0.2",
+    "floorplan": "FE_LROP",
+    "project": {
+        "name": "books-demo",
+        "targetFolder": "/home/user/projects/PipeLineDEmo",
+        "title": "Books Demo",
+        "description": "A simple demo application for managing books.",
+        "ui5Version": "1.136.0",
+        "localUI5Version": "1.82.2",
+        "sapux": true
+    },
+    "service": {
+        "servicePath": "/odata/v4/catalog/",
+        "capService": {
+            "projectPath": "/home/user/projects/PipeLineDEmo",
+            "serviceName": "CatalogService",
+            "serviceCdsPath": "srv/service"
+        }
+    },
+    "entityConfig": {
+        "mainEntity": {
+            "entityName": "Books"
+        },
+        "generateLROPAnnotations": true
+    },
+    "projectTemplateType": "LIST_REPORT_OBJECT_PAGE",
+    "telemetryData": {
+        "generationSourceName": "AI Headless",
+        "generationSourceVersion": "1.20.4"
+    }
+}
