@@ -1,0 +1,19 @@
+general:
+  buildTool: "npm"
+
+stages:
+  Build:
+    npmExecuteLint: true
+    npmExecuteScripts: true
+
+  Additional Unit Tests:
+    npmExecuteTests: true
+
+  Acceptance:
+    cloudFoundryDeploy: true
+
+steps:
+  cloudFoundryDeploy:
+    cfApiEndpoint: "https://api.cf.us10.hana.ondemand.com"
+    cfOrg: "trial"
+    cfSpace: "dev"
