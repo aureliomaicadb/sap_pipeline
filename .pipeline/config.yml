@@ -1,19 +1,16 @@
 general:
-  buildTool: "npm"
+  buildTool: "mta"
+
+service:
+  buildToolVersion: "MBT17N18"
 
 stages:
   Build:
-    npmExecuteLint: true
-    npmExecuteScripts: true
+    mtaBuild: true
 
-  Additional Unit Tests:
-    npmExecuteTests: true
-
-  Acceptance:
-    cloudFoundryDeploy: true
+  Compliance:
+    sonarExecuteScan: true
 
 steps:
-  cloudFoundryDeploy:
-    cfApiEndpoint: "https://api.cf.us10.hana.ondemand.com"
-    cfOrg: "trial"
-    cfSpace: "dev"
+  mtaBuild:
+    buildTarget: "CF"
