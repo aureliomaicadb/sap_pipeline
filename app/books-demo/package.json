@@ -1,12 +1,7 @@
 {
   "name": "books-demo",
   "version": "0.0.1",
-  "description": "A simple demo application for managing books.",
-  "keywords": [
-    "ui5",
-    "openui5",
-    "sapui5"
-  ],
+  "private": true,
   "main": "webapp/index.html",
   "dependencies": {},
   "devDependencies": {
@@ -14,6 +9,7 @@
     "@sap/ux-ui5-tooling": "1"
   },
   "scripts": {
+    "build": "ui5 build --all",
     "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf"
   }
 }

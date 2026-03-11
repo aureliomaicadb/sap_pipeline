@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/core/AppComponent","sap/ui/dom/includeStylesheet"],function(e,t){"use strict";return e.extend("booksdemo.Component",{metadata:{manifest:"json"},init:function(){t(sap.ui.require.toUrl("booksdemo/css/style.css"));e.prototype.init.apply(this,arguments)}})});
+//# sourceMappingURL=Component.js.map

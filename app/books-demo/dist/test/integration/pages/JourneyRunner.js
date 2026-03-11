@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/test/JourneyRunner","booksdemo/test/integration/pages/BooksList","booksdemo/test/integration/pages/BooksObjectPage"],function(e,o,t){"use strict";var s=new e({launchUrl:sap.ui.require.toUrl("booksdemo")+"/test/flpSandbox.html#booksdemo-tile",pages:{onTheBooksList:o,onTheBooksObjectPage:t},async:true});return s});
+//# sourceMappingURL=JourneyRunner.js.map

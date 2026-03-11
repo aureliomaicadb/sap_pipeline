@@ -2,12 +2,10 @@ _schema-version: '3.1'
 ID: PipeLineDEmo
 version: 1.0.0
 description: A simple CAP project.
-
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
   subdomain: 2aeea754trial
-
 build-parameters:
   before-all:
     - builder: custom
@@ -19,32 +17,32 @@ build-parameters:
     - builder: custom
       commands:
         - npm install --production
-        - bash -c "cds -v | grep 'cds-dk' || npm i --production --no-save @sap/cds-dk"
+        - >-
+          bash -c "cds -v | grep 'cds-dk' || npm i --production --no-save
+          @sap/cds-dk"
         - bash -c "export PATH=$PATH:$(pwd)/node_modules/.bin"
         - cds build --production
   after-all:
     - builder: custom
       commands:
         - npm install
-
 modules:
-
   - name: PipeLineDEmo-booksdemo
     type: html5
     path: app/books-demo
     build-parameters:
       builder: custom
       commands:
-        - rm -rf dist
-        - rm -rf dist-zip
+        - rm -rf dist-zip dist
         - npm install
-        - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
-        - mkdir -p dist-zip
-        - bash -c "cd dist && zip -rq ../dist-zip/booksdemo.zip ."
-      build-result: dist-zip
-      supported-platforms: []
+        - >-
+          npx -p @ui5/cli@^3.0.0 ui5 build --dest dist
+          --include-task=generateCachebusterInfo
+        - mkdir dist-zip
+        - bash -c "cd dist && npx bestzip ../dist-zip/booksdemo.zip *"
       _artifactName: booksdemo.zip
-
+      supported-platforms: []
+      build-result: dist-zip
   - name: PipeLineDEmo-db-deployer
     type: hdb
     path: gen/db
@@ -58,7 +56,6 @@ modules:
     requires:
       - name: PipeLineDEmo-service-uaa
       - name: PipeLineDEmo-service-db
-
   - name: PipeLineDEmo-srv
     type: nodejs
     path: gen/srv
@@ -80,7 +77,6 @@ modules:
       - name: PipeLineDEmo-service-metadata
       - name: PipeLineDEmo-service-connectivity
       - name: PipeLineDEmo-service-logs
-
   - name: PipeLineDEmo-aux-destinations
     type: com.sap.application.content
     parameters:
@@ -93,19 +89,16 @@ modules:
               ServiceInstanceName: PipeLineDEmo-uaa
               ServiceKeyName: PipeLineDEmo-uaa-key
               sap.cloud.service: lcap.PipeLineDEmo
-
             - Authentication: OAuth2UserTokenExchange
               Name: PipeLineDEmo-app-srv
               TokenServiceInstanceName: PipeLineDEmo-uaa
               TokenServiceKeyName: PipeLineDEmo-uaa-key
               URL: ~{srv-api/srv-url}
               sap.cloud.service: lcap.PipeLineDEmo
-
             - Name: PipeLineDEmo-service-html5-apps-repo-host
               ServiceInstanceName: PipeLineDEmo-html5-apps-repo-host
               ServiceKeyName: PipeLineDEmo-html5-apps-repo-host-key
               sap.cloud.service: lcap.PipeLineDEmo
-
             - Authentication: OAuth2UserTokenExchange
               Name: PipeLineDEmo-CatalogService
               TokenServiceInstanceName: PipeLineDEmo-uaa
@@ -119,27 +112,21 @@ modules:
               WebIDEEnabled: false
               MobileEnabled: false
               AppgyverEnabled: false
-
     build-parameters:
       no-source: true
-
     requires:
       - name: PipeLineDEmo-service-uaa
         parameters:
           service-key:
             name: PipeLineDEmo-uaa-key
-
       - name: srv-api
-
       - name: PipeLineDEmo-service-html5-apps-repo-host
         parameters:
           service-key:
             name: PipeLineDEmo-html5-apps-repo-host-key
-
       - name: PipeLineDEmo-service-destination
         parameters:
           content-target: true
-
   - name: PipeLineDEmo-launchpad
     type: html5
     path: build/launchpad
@@ -147,13 +134,14 @@ modules:
       builder: custom
       commands:
         - npm install
-        - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
-        - bash -c "cd dist && zip -rq ../../../build/dist/launchpad.zip ."
+        - >-
+          npx -p @ui5/cli@^3.0.0 ui5 build --dest dist
+          --include-task=generateCachebusterInfo
+        - bash -c "cd dist && npx bestzip ../../../build/dist/launchpad.zip *"
         - rm -rf dist
-      build-result: ../../build/dist
-      supported-platforms: []
       _artifactName: launchpad.zip
-
+      supported-platforms: []
+      build-result: ../../build/dist
   - name: PipeLineDEmo-aux-ui-deployer
     type: com.sap.application.content
     path: build/ui-deployer
@@ -168,14 +156,11 @@ modules:
           artifacts:
             - launchpad.zip
           target-path: resources
-
     requires:
       - name: PipeLineDEmo-service-html5-apps-repo-host
         parameters:
           content-target: true
-
 resources:
-
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-uaa
     parameters:
@@ -193,14 +178,12 @@ resources:
             - x509
         xsappname: PipeLineDEmo-${space}
         role-collections: []
-
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-db
     parameters:
       service: hana
       service-plan: hdi-shared
       service-name: PipeLineDEmo-db
-
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-destination
     parameters:
@@ -210,7 +193,6 @@ resources:
       config:
         HTML5Runtime_enabled: true
         version: 1.0.0
-
   - type: org.cloudfoundry.user-provided-service
     name: PipeLineDEmo-service-metadata
     parameters:
@@ -219,21 +201,18 @@ resources:
       service-name: PipeLineDEmo-metadata
       config:
         default-domain: ${default-domain}
-
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-connectivity
     parameters:
       service: connectivity
       service-plan: lite
       service-name: PipeLineDEmo-connectivity
-
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-logs
     parameters:
       service: application-logs
       service-plan: lite
       service-name: PipeLineDEmo-logs
-
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-html5-apps-repo-host
     parameters:

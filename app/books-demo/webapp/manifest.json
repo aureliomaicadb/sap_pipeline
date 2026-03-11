@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/catalog/",
+        "uri": "odata/v4/catalog/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -142,5 +142,9 @@
     "app": {
       "enableLazyLoading": true
     }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "lcap.PipeLineDEmo"
   }
 }
