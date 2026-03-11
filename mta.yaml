@@ -22,10 +22,6 @@ build-parameters:
         - bash -c "cds -v | grep 'cds-dk' || npm i --production --no-save @sap/cds-dk"
         - bash -c "export PATH=$PATH:$(pwd)/node_modules/.bin"
         - cds build --production
-  after-all:
-    - builder: custom
-      commands:
-        - npm install
 
 modules:
 
@@ -36,14 +32,10 @@ modules:
       builder: custom
       commands:
         - rm -rf dist
-        - rm -rf dist-zip
         - npm install
         - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
-        - mkdir -p dist-zip
-        - bash -c "cd dist && zip -rq ../dist-zip/booksdemo.zip ."
-      build-result: dist-zip
+      build-result: dist
       supported-platforms: []
-      _artifactName: booksdemo.zip
 
   - name: PipeLineDEmo-db-deployer
     type: hdb
@@ -112,13 +104,6 @@ modules:
               TokenServiceKeyName: PipeLineDEmo-uaa-key
               URL: ~{srv-api/srv-url}/odata/v4/catalog
               sap.cloud.service: lcap.PipeLineDEmo
-              sap.applicationdevelopment.actions.enabled: false
-              sap.build.usage: CAP
-              sap.processautomation.enabled: false
-              HTML5.DynamicDestination: false
-              WebIDEEnabled: false
-              MobileEnabled: false
-              AppgyverEnabled: false
 
     build-parameters:
       no-source: true
@@ -140,40 +125,6 @@ modules:
         parameters:
           content-target: true
 
-  - name: PipeLineDEmo-launchpad
-    type: html5
-    path: build/launchpad
-    build-parameters:
-      builder: custom
-      commands:
-        - npm install
-        - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
-        - bash -c "cd dist && zip -rq ../../../build/dist/launchpad.zip ."
-        - rm -rf dist
-      build-result: ../../build/dist
-      supported-platforms: []
-      _artifactName: launchpad.zip
-
-  - name: PipeLineDEmo-aux-ui-deployer
-    type: com.sap.application.content
-    path: build/ui-deployer
-    build-parameters:
-      build-result: resources
-      requires:
-        - name: PipeLineDEmo-booksdemo
-          artifacts:
-            - booksdemo.zip
-          target-path: resources
-        - name: PipeLineDEmo-launchpad
-          artifacts:
-            - launchpad.zip
-          target-path: resources
-
-    requires:
-      - name: PipeLineDEmo-service-html5-apps-repo-host
-        parameters:
-          content-target: true
-
 resources:
 
   - type: org.cloudfoundry.managed-service
@@ -183,16 +134,6 @@ resources:
       service-plan: application
       service-name: PipeLineDEmo-uaa
       path: xs-security.json
-      config:
-        oauth2-configuration:
-          redirect-uris:
-            - https://${subdomain}.launchpad.${default-domain}/login/*
-            - https://${subdomain}.${default-domain}/login/*
-          credential-types:
-            - binding-secret
-            - x509
-        xsappname: PipeLineDEmo-${space}
-        role-collections: []
 
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-db
@@ -207,18 +148,6 @@ resources:
       service: destination
       service-plan: lite
       service-name: PipeLineDEmo-destination
-      config:
-        HTML5Runtime_enabled: true
-        version: 1.0.0
-
-  - type: org.cloudfoundry.user-provided-service
-    name: PipeLineDEmo-service-metadata
-    parameters:
-      service: metadata
-      service-plan: standard
-      service-name: PipeLineDEmo-metadata
-      config:
-        default-domain: ${default-domain}
 
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-connectivity
