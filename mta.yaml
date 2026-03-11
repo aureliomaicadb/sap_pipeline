@@ -60,8 +60,8 @@ resources:
       service-name: PipeLineDEmo-uaa
       path: xs-security.json
       config:
-        xsappname: PipeLineDEmo-${space}
-        tenant-mode: dedicated
+      xsappname: PipeLineDEmo-${space}
+      tenant-mode: dedicated
 
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-db
