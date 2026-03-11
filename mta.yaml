@@ -69,7 +69,6 @@ modules:
       - name: PipeLineDEmo-service-uaa
       - name: PipeLineDEmo-service-db
       - name: PipeLineDEmo-service-destination
-      - name: PipeLineDEmo-service-metadata
       - name: PipeLineDEmo-service-connectivity
       - name: PipeLineDEmo-service-logs
 
