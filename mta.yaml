@@ -24,18 +24,6 @@ build-parameters:
         - cds build --production
 
 modules:
-  - name: PipeLineDEmo-booksdemo
-    type: html5
-    path: app/books-demo
-    build-parameters:
-      builder: custom
-      commands:
-        - rm -rf dist
-        - npm install
-        - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
-      build-result: dist
-      supported-platforms: []
-
   - name: PipeLineDEmo-db-deployer
     type: hdb
     path: gen/db
@@ -71,81 +59,6 @@ modules:
       - name: PipeLineDEmo-service-connectivity
       - name: PipeLineDEmo-service-logs
 
-  - name: PipeLineDEmo-aux-destinations
-    type: com.sap.application.content
-    parameters:
-      content:
-        subaccount:
-          existing_destinations_policy: update
-          destinations:
-            - Authentication: OAuth2UserTokenExchange
-              Name: PipeLineDEmo-service-uaa
-              ServiceInstanceName: PipeLineDEmo-uaa
-              ServiceKeyName: PipeLineDEmo-uaa-key
-              sap.cloud.service: lcap.PipeLineDEmo
-            - Authentication: OAuth2UserTokenExchange
-              Name: PipeLineDEmo-app-srv
-              TokenServiceInstanceName: PipeLineDEmo-uaa
-              TokenServiceKeyName: PipeLineDEmo-uaa-key
-              URL: ~{srv-api/srv-url}
-              sap.cloud.service: lcap.PipeLineDEmo
-            - Name: PipeLineDEmo-service-html5-apps-repo-host
-              ServiceInstanceName: PipeLineDEmo-html5-apps-repo-host
-              ServiceKeyName: PipeLineDEmo-html5-apps-repo-host-key
-              sap.cloud.service: lcap.PipeLineDEmo
-            - Authentication: OAuth2UserTokenExchange
-              Name: PipeLineDEmo-CatalogService
-              TokenServiceInstanceName: PipeLineDEmo-uaa
-              TokenServiceKeyName: PipeLineDEmo-uaa-key
-              URL: ~{srv-api/srv-url}/odata/v4/catalog
-              sap.cloud.service: lcap.PipeLineDEmo
-    build-parameters:
-      no-source: true
-    requires:
-      - name: PipeLineDEmo-service-uaa
-        parameters:
-          service-key:
-            name: PipeLineDEmo-uaa-key
-      - name: srv-api
-      - name: PipeLineDEmo-service-html5-apps-repo-host
-        parameters:
-          service-key:
-            name: PipeLineDEmo-html5-apps-repo-host-key
-      - name: PipeLineDEmo-service-destination
-        parameters:
-          content-target: true
-
-  - name: PipeLineDEmo-launchpad
-    type: html5
-    path: build/launchpad
-    build-parameters:
-      builder: custom
-      commands:
-        - npm install
-        - npx -p @ui5/cli@^3.0.0 ui5 build --dest dist --include-task=generateCachebusterInfo
-      build-result: dist
-      supported-platforms: []
-
-  - name: PipeLineDEmo-aux-ui-deployer
-    type: com.sap.application.content
-    path: .
-    build-parameters:
-      no-source: false
-      build-result: .
-      requires:
-        - name: PipeLineDEmo-booksdemo
-          artifacts:
-            - '**/*'
-          target-path: resources/booksdemo
-        - name: PipeLineDEmo-launchpad
-          artifacts:
-            - '**/*'
-          target-path: resources/launchpad
-    requires:
-      - name: PipeLineDEmo-service-html5-apps-repo-host
-        parameters:
-          content-target: true
-
 resources:
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-uaa
@@ -168,9 +81,6 @@ resources:
       service: destination
       service-plan: lite
       service-name: PipeLineDEmo-destination
-      config:
-        HTML5Runtime_enabled: true
-        version: 1.0.0
 
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-connectivity
@@ -185,10 +95,3 @@ resources:
       service: application-logs
       service-plan: lite
       service-name: PipeLineDEmo-logs
-
-  - type: org.cloudfoundry.managed-service
-    name: PipeLineDEmo-service-html5-apps-repo-host
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-host
-      service-name: PipeLineDEmo-html5-apps-repo-host
