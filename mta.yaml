@@ -4,18 +4,10 @@ version: 1.0.0
 description: A simple CAP project.
 
 parameters:
-  deploy_mode: html5-repo
   enable-parallel-deployments: true
-  subdomain: 2aeea754trial
 
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - rm -rf build/dist
-        - mkdir -p build/dist
-        - rm -rf build/ui-deployer
-        - mkdir -p build/ui-deployer
     - builder: custom
       commands:
         - npm install --production
@@ -67,6 +59,9 @@ resources:
       service-plan: application
       service-name: PipeLineDEmo-uaa
       path: xs-security.json
+      config:
+        xsappname: PipeLineDEmo-${space}
+        tenant-mode: dedicated
 
   - type: org.cloudfoundry.managed-service
     name: PipeLineDEmo-service-db
