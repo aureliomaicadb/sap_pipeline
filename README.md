@@ -23,3 +23,7 @@ File or Folder | Purpose
 ## Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
+
+## cf-node-app (piloto Cloud Foundry)
+
+Pasta `cf-node-app/`: app Node.js mínima para SAP BTP Cloud Foundry (tela status + `ENV` dev/hom/prod). Deploy: `cd cf-node-app && cf push -f manifest-dev.yml`. CI: `.github/workflows/cf-deploy.yml` (secrets `CF_*_DEV` / `_HOM` / `_PROD`).
