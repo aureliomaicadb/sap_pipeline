@@ -1,0 +1,6 @@
+# Deploy local rapido
+cf target -o 2aeea754trial -s dev
+cf push -f manifest-dev.yml
+
+# Logs ao vivo
+cf logs cap-produtos-api-dev

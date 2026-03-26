@@ -1,0 +1,24 @@
+{
+  "name": "cap-produtos-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CAP API para tabela PRODUTOS no SAP HANA Cloud",
+  "scripts": {
+    "start": "npx cds run",
+    "watch": "npx cds watch"
+  },
+  "dependencies": {
+    "@cap-js/hana": "^1",
+    "@sap/cds": "^8",
+    "@sap/hana-client": "^2.28.17",
+    "@sap/cds-dk": "^8"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "hana"
+      },
+      "auth": "mocked"
+    }
+  }
+}

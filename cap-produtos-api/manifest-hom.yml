@@ -1,0 +1,14 @@
+---
+applications:
+  - name: cap-produtos-api-hom
+    memory: 256M
+    disk_quota: 512M
+    random-route: true
+    buildpacks:
+      - nodejs_buildpack
+    command: npm start
+    env:
+      NODE_ENV: production
+      CDS_ENV: production
+    services:
+      - hana-db
