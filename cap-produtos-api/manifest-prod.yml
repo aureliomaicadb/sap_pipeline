@@ -10,5 +10,6 @@ applications:
     env:
       NODE_ENV: production
       CDS_ENV: production
+      APP_ENV: prod
     services:
       - hana-db
